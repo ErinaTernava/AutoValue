@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 from fastapi import FastAPI
 from app.schemas import CarInput, PriceOutput
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="CarPrice API", version="1.0")
 
@@ -63,3 +64,11 @@ def predict(car: CarInput):
         high_price_eur=high_eur,
         summary_eur=f"€{low_eur:,.0f} — €{mid_eur:,.0f} — €{high_eur:,.0f}"
     )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4200"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)

@@ -1,0 +1,39 @@
+<div style="display: flex; gap: 40px">
+  <div style="width: 300px">
+    <h3>Car Input</h3>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <input formControlName="brand" placeholder="brand" /><br /><br />
+      <input formControlName="model" placeholder="model" /><br /><br />
+
+      <input type="number" formControlName="year" placeholder="year" /><br /><br />
+      <input type="number" formControlName="mileage" placeholder="mileage" /><br /><br />
+
+      <input formControlName="fuelType" placeholder="fuelType" /><br /><br />
+      <input formControlName="transmission" placeholder="transmission" /><br /><br />
+
+      <input type="number" formControlName="engineSize" placeholder="engineSize" /><br /><br />
+      <input type="number" formControlName="mpg" placeholder="mpg" /><br /><br />
+
+      <button type="submit">Suggest Price</button>
+    </form>
+  </div>
+
+  <div style="flex: 1">
+    <h3>Result</h3>
+
+    @if (loading) {
+      <div>Loading...</div>
+    }
+
+    @if (result) {
+      <p><b>Low:</b> {{ result.low_price_eur }}</p>
+      <p><b>Fair:</b> {{ result.fair_price_eur }}</p>
+      <p><b>High:</b> {{ result.high_price_eur }}</p>
+      <hr />
+      <p>
+        <b>{{ result.summary_eur }}</b>
+      </p>
+    }
+  </div>
+</div>
