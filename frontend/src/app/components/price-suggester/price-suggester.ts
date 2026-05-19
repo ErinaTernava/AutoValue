@@ -1,10 +1,21 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Endpoints } from '../../services/endpoints';
+import { Header } from '../common/header/header';
+import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-price-suggester',
-  imports: [ReactiveFormsModule],
+  imports: [
+    ReactiveFormsModule,
+    Header,
+    MatFormFieldModule, 
+    MatLabel, 
+    MatInputModule,
+    CommonModule
+  ],
   templateUrl: './price-suggester.html',
   styleUrl: './price-suggester.scss',
 })
@@ -43,5 +54,9 @@ export class PriceSuggester {
         this.loading = false;
       },
     });
+  }
+
+  resetForm() {
+    this.form.reset();
   }
 }

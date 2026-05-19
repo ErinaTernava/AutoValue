@@ -1,7 +1,7 @@
 <app-header></app-header>
 <div class="video-bg">
   <video autoplay muted loop id="myVideo">
-    <source src="Video.mp4" type="video/mp4" />
+    <source src="/Video.mp4" type="video/mp4" />
   </video>
 </div>
 <div class="wrapper">
@@ -28,7 +28,7 @@
     </div>
     <div class="card b1">
       <h4>Price Suggestor</h4>
-      <p>
+      <p routerLink="price-suggester">
         Interested in selling a car but not knowing how to price it fairly? We got you! This is
         stronger than a normal predictor because it's multi-output decisioning, not just a single
         number.
@@ -84,8 +84,8 @@
     <h1>Ready to find the right price?</h1>
     <p>Start analyzing cars based on real market intelligence.</p>
     <div class="button-display">
-      <button class="btn" routerLink="/price-evaluator">Evaluate a Car</button>
-      <button class="btn" routerLink="/price-suggestion">Get Price Suggestion</button>
+      <button class="btn" routerLink="price-evaluator">Evaluate a Car</button>
+      <button class="btn" routerLink="price-suggester">Get Price Suggestion</button>
     </div>
   </div>
 </div>
