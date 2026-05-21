@@ -54,3 +54,6 @@ print(df["brand"].value_counts())
 
 joblib.dump(df, "processed/df_cleaned.pkl")
 print("\nSaved to processed/df_cleaned.pkl")
+
+df.to_csv("data/dataCleaned.csv", index=False)
+print("Also saved to data/df_cleaned.csv")
