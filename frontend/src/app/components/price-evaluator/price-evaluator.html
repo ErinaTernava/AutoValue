@@ -1,1 +1,137 @@
-<p>price-evaluator works!</p>
+<app-header />
+
+<div class="bg"></div>
+
+<div class="wrapper">
+  <div class="card">
+    <h3>Price Evaluator</h3>
+    <p class="subtitle">Enter the car details and the seller's asking price to find out if it's a good deal.</p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      @if (form.dirty) {
+        <div class="reset-button" (click)="resetForm()">
+          <span class="material-icons">refresh</span>
+        </div>
+      }
+
+      <mat-form-field appearance="outline" hideRequiredMarker>
+        <mat-label>Brand</mat-label>
+        <mat-select formControlName="brand">
+          @for (b of brands; track b) {
+            <mat-option [value]="b">{{ b | titlecase }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" hideRequiredMarker>
+        <mat-label>Model</mat-label>
+        <input matInput formControlName="model">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" hideRequiredMarker>
+        <mat-label>Year</mat-label>
+        <input matInput type="number" formControlName="year">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" hideRequiredMarker>
+        <mat-label>Mileage</mat-label>
+        <input matInput type="number" formControlName="mileage">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" hideRequiredMarker>
+        <mat-label>Fuel Type</mat-label>
+        <mat-select formControlName="fuelType">
+          @for (f of fuelTypes; track f) {
+            <mat-option [value]="f">{{ f }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" hideRequiredMarker>
+        <mat-label>Transmission</mat-label>
+        <mat-select formControlName="transmission">
+          @for (t of transmissions; track t) {
+            <mat-option [value]="t">{{ t }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" hideRequiredMarker>
+        <mat-label>Engine Size</mat-label>
+        <input matInput type="number" step="0.1" formControlName="engineSize">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" hideRequiredMarker>
+        <mat-label>MPG</mat-label>
+        <input matInput type="number" formControlName="mpg">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="asked-field" hideRequiredMarker>
+        <mat-label>Seller's Asking Price (€)</mat-label>
+        <input matInput type="number" formControlName="asked_price">
+      </mat-form-field>
+
+      <button type="submit" [disabled]="form.invalid || loading">
+        {{ loading ? 'Evaluating...' : 'Evaluate Price' }}
+      </button>
+    </form>
+  </div>
+
+  <div class="result-card">
+    <h3>Evaluation Result</h3>
+
+    @if (!result && !loading) {
+      <div class="placeholder">
+        <span class="material-icons placeholder-icon">search</span>
+        <p>Fill in the car details and the asking price to get an instant evaluation.</p>
+      </div>
+    }
+
+    @if (loading) {
+      <div class="loading">
+        <span class="material-icons spin">autorenew</span>
+        Analyzing market data...
+      </div>
+    }
+
+    @if (result) {
+      <div class="verdict-banner" [ngClass]="result.verdict_color">
+        <span class="verdict-text">{{ result.verdict }}</span>
+        <span class="savings-label">{{ savingsLabel }}</span>
+      </div>
+
+      <div class="price-comparison">
+        <div class="price-item asked">
+          <span>Asked Price</span>
+          <h2>€{{ result.asked_price_eur | number:'1.0-0' }}</h2>
+        </div>
+      </div>
+
+      <div class="divider">vs. market prediction</div>
+
+      <div class="price-box">
+        <div class="price-item">
+          <span>Low Estimate</span>
+          <h2>€{{ result.low_price_eur | number:'1.0-0' }}</h2>
+        </div>
+
+        <div class="price-item ideal">
+          <div>
+            <span>Fair Price</span>
+            <h2>€{{ result.fair_price_eur | number:'1.0-0' }}</h2>
+          </div>
+          <div class="suggestion">Our recommendation</div>
+        </div>
+
+        <div class="price-item">
+          <span>High Estimate</span>
+          <h2>€{{ result.high_price_eur | number:'1.0-0' }}</h2>
+        </div>
+      </div>
+
+      <div class="summary">
+        Market range: {{ result.summary_eur }}
+      </div>
+    }
+  </div>
+</div>

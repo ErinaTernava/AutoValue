@@ -1,0 +1,275 @@
+.bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  overflow: hidden;
+  background: linear-gradient(180deg, #292929 0%, #252525 45%, #0e0e0e 100%);
+}
+
+.wrapper {
+  display: flex;
+  gap: 40px;
+  padding: 120px 60px 40px;
+  min-height: 100vh;
+  color: white;
+  box-sizing: border-box;
+
+  .card {
+    width: 720px;
+    padding: 30px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35),
+                inset 0 1px 1px rgba(255, 255, 255, 0.04);
+    position: relative;
+
+    h3 {
+      margin-bottom: 8px;
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    .subtitle {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 14px;
+      margin-bottom: 24px;
+      margin-top: 0;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+
+      /* Highlight the asking price field */
+      .asked-field {
+        ::ng-deep .mdc-notched-outline__leading,
+        ::ng-deep .mdc-notched-outline__notch,
+        ::ng-deep .mdc-notched-outline__trailing {
+          border-color: rgba(127, 182, 255, 0.5) !important;
+        }
+      }
+
+      button {
+        margin-top: 10px;
+        height: 52px;
+        border: none;
+        border-radius: 14px;
+        background: white;
+        color: black;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+
+        &:hover:not(:disabled) {
+          background-color: transparent;
+          border: 1px solid white;
+          color: white;
+        }
+
+        &:disabled {
+          opacity: 0.4;
+          cursor: not-allowed;
+        }
+      }
+
+      .reset-button {
+        position: absolute;
+        top: 45px;
+        right: 25px;
+        cursor: pointer;
+        color: rgba(255, 255, 255, 0.6);
+
+        &:hover { color: #7fb6ff; }
+      }
+    }
+  }
+
+  .result-card {
+    flex: 1;
+    padding: 30px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35),
+                inset 0 1px 1px rgba(255, 255, 255, 0.04);
+
+    h3 {
+      margin-bottom: 25px;
+      font-size: 28px;
+    }
+
+    .placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+      color: rgba(255, 255, 255, 0.3);
+      text-align: center;
+
+      .placeholder-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+      }
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #b5dafd;
+      font-size: 18px;
+
+      .spin {
+        animation: spin 1s linear infinite;
+      }
+    }
+
+    .verdict-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 22px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+
+      .verdict-text {
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .savings-label {
+        font-size: 14px;
+        opacity: 0.85;
+      }
+
+      &.green {
+        background: rgba(0, 200, 100, 0.15);
+        border: 2px solid rgba(0, 200, 100, 0.5);
+        color: #4eff9e;
+      }
+      &.blue {
+        background: rgba(0, 120, 255, 0.15);
+        border: 2px solid rgba(0, 120, 255, 0.5);
+        color: #7fb6ff;
+      }
+      &.orange {
+        background: rgba(255, 140, 0, 0.15);
+        border: 2px solid rgba(255, 140, 0, 0.5);
+        color: #ffb347;
+      }
+      &.red {
+        background: rgba(220, 50, 50, 0.15);
+        border: 2px solid rgba(220, 50, 50, 0.5);
+        color: #ff7070;
+      }
+    }
+
+    .price-comparison {
+      margin-bottom: 12px;
+
+      .price-item.asked {
+        padding: 18px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+
+        span {
+          display: block;
+          margin-bottom: 6px;
+          color: #b5d2fd;
+          font-size: 14px;
+        }
+
+        h2 { margin: 0; font-size: 32px; color: white; }
+      }
+    }
+
+    .divider {
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.3);
+      margin: 12px 0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .price-box {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 20px;
+
+      .price-item {
+        padding: 18px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+
+        span {
+          display: block;
+          margin-bottom: 6px;
+          color: #b5d2fd;
+          font-size: 14px;
+        }
+
+        h2 { margin: 0; font-size: 28px; color: white; }
+
+        .suggestion {
+          margin-top: 15px;
+          color: #b5d2fd;
+          font-size: 20px;
+        }
+      }
+
+      .ideal {
+        border: 2px solid #004db3;
+        display: flex;
+        gap: 3%;
+        box-shadow: 0 0 8px #004db3;
+      }
+    }
+
+    .summary {
+      padding: 20px;
+      border-radius: 16px;
+      background: rgb(0 93 233 / 12%);
+      border: 1px solid rgba(139, 174, 250, 0.2);
+      color: #d6e6fe;
+      line-height: 1.6;
+    }
+  }
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+::ng-deep {
+  .mat-mdc-input-element { color: white !important; }
+
+  .mat-mdc-text-field-wrapper {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+    border-radius: 14px !important;
+  }
+
+  .mat-mdc-form-field:not(.mat-form-field-disabled)
+    .mat-mdc-floating-label.mdc-floating-label {
+    color: rgba(255, 255, 255, 0.692);
+  }
+
+  .mat-mdc-select-value-text { color: white !important; }
+  .mat-mdc-select-arrow { color: rgba(255,255,255,0.6) !important; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}

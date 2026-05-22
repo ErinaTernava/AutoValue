@@ -6,11 +6,15 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class Endpoints {
-  private apiUrl = 'http://127.0.0.1:8000/predict';
+  private apiUrl = 'http://127.0.0.1:8000';
 
   constructor(private http: HttpClient) {}
 
   predict(data: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, data);
+  }
+
+  evaluate(data: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/evaluate`, data);
   }
 }
