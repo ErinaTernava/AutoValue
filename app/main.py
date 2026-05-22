@@ -2,7 +2,7 @@ import joblib
 import numpy as np
 import pandas as pd
 from fastapi import FastAPI
-from app.schemas import CarInput, PriceOutput
+from app.schemas import CarInput, PriceOutput, EvaluateInput, EvaluateOutput
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="CarPrice API", version="1.0")
@@ -65,9 +65,60 @@ def predict(car: CarInput):
         summary_eur=f"€{low_eur:,.0f} — €{mid_eur:,.0f} — €{high_eur:,.0f}"
     )
 
+@app.post("/evaluate", response_model=EvaluateOutput)
+def evaluate(car: EvaluateInput):
+    car_for_features = CarInput(
+        brand=car.brand,
+        model=car.model,
+        year=car.year,
+        mileage=car.mileage,
+        fuelType=car.fuelType,
+        transmission=car.transmission,
+        engineSize=car.engineSize,
+        mpg=car.mpg,
+    )
+    features = build_features(car_for_features)
+
+    low_gbp  = float(np.expm1(model_low.predict(features)[0]))
+    mid_gbp  = float(np.expm1(model_mid.predict(features)[0]))
+    high_gbp = float(np.expm1(model_high.predict(features)[0]))
+
+    low_eur  = round(low_gbp  * GBP_TO_EUR, 2)
+    mid_eur  = round(mid_gbp  * GBP_TO_EUR, 2)
+    high_eur = round(high_gbp * GBP_TO_EUR, 2)
+
+    asked = round(car.asked_price, 2)
+    savings = round(mid_eur - asked, 2)
+
+    ratio = asked / mid_eur if mid_eur > 0 else 1
+
+    if ratio <= 0.85:
+        verdict = "Great Deal"
+        color   = "green"
+    elif ratio <= 1.05:
+        verdict = "Fair Price"
+        color   = "blue"
+    elif ratio <= 1.20:
+        verdict = "Slightly Overpriced"
+        color   = "orange"
+    else:
+        verdict = "Way Overpriced"
+        color   = "red"
+
+    return EvaluateOutput(
+        low_price_eur=low_eur,
+        fair_price_eur=mid_eur,
+        high_price_eur=high_eur,
+        asked_price_eur=asked,
+        verdict=verdict,
+        verdict_color=color,
+        summary_eur=f"€{low_eur:,.0f} — €{mid_eur:,.0f} — €{high_eur:,.0f}",
+        savings_eur=savings,
+    )
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:4200"],
+    allow_origins=["http://localhost:4200", "http://127.0.0.1:4200"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
