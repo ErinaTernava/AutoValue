@@ -100,38 +100,32 @@
         <span class="savings-label">{{ savingsLabel }}</span>
       </div>
 
-      <div class="price-comparison">
-        <div class="price-item asked">
-          <span>Asked Price</span>
-          <h2>€{{ result.asked_price_eur | number:'1.0-0' }}</h2>
-        </div>
-      </div>
+      @if (result.savings_eur > 0) {
 
-      <div class="divider">vs. market prediction</div>
+  <div class="price-comparison">
+    <div class="price-item asked">
+      <span>Asked Price</span>
+      <h2>€{{ result.asked_price_eur | number:'1.0-0' }}</h2>
+    </div>
+  </div>
 
-      <div class="price-box">
-        <div class="price-item">
-          <span>Low Estimate</span>
-          <h2>€{{ result.low_price_eur | number:'1.0-0' }}</h2>
-        </div>
+}
 
-        <div class="price-item ideal">
-          <div>
-            <span>Fair Price</span>
-            <h2>€{{ result.fair_price_eur | number:'1.0-0' }}</h2>
-          </div>
-          <div class="suggestion">Our recommendation</div>
-        </div>
+@if (result.savings_eur < 0) {
 
-        <div class="price-item">
-          <span>High Estimate</span>
-          <h2>€{{ result.high_price_eur | number:'1.0-0' }}</h2>
-        </div>
-      </div>
+  <div class="price-comparison">
+    <div class="price-item asked">
+      <span>Asked Price</span>
+      <h2>€{{ result.asked_price_eur | number:'1.0-0' }}</h2>
+    </div>
+  </div>
 
-      <div class="summary">
-        Market range: {{ result.summary_eur }}
-      </div>
+  <div class="divider">vs. market prediction</div>
+
+  <div class="summary">
+    Market range: {{ result.summary_eur }}
+  </div>
+}
     }
   </div>
 </div>
