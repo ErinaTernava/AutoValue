@@ -1,0 +1,288 @@
+<app-header />
+
+<div class="bg"></div>
+
+<div class="wrapper">
+  <div class="comparison-header">
+    <h1>Compare Cars</h1>
+    <p class="subtitle">Select two cars from our database and find which one matches your needs better</p>
+  </div>
+
+  <div class="comparison-container">
+  
+    <div class="car-card" [class.winner]="getWinnerClass(1)" [class.tie]="getWinnerClass(0)">
+      <div class="car-header">
+        <h2>Car 1</h2>
+        <span class="winner-badge" *ngIf="result?.winner === 1">🏆 Winner</span>
+      </div>
+      
+      <form [formGroup]="car1Form">
+        <mat-form-field appearance="outline">
+          <mat-label>Brand</mat-label>
+          <mat-select formControlName="brand">
+            <mat-option *ngFor="let brand of brands" [value]="brand">
+              {{ brand | titlecase }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Model</mat-label>
+          <mat-select formControlName="model" [disabled]="!car1Form.get('brand')?.value">
+            <mat-option *ngIf="loadingCar1Models" disabled>Loading...</mat-option>
+            <mat-option *ngFor="let model of car1Models" [value]="model">
+              {{ model }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Year</mat-label>
+          <mat-select formControlName="year" [disabled]="!car1Form.get('model')?.value">
+            <mat-option *ngIf="loadingCar1Years" disabled>Loading...</mat-option>
+            <mat-option *ngFor="let year of car1Years" [value]="year">
+              {{ year }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
+
+  
+      <div class="car-details" *ngIf="car1Details">
+        <h4>Car Specifications</h4>
+        <div *ngIf="loadingCar1Details" class="loading-details">Loading details...</div>
+        <div *ngIf="!loadingCar1Details" class="detail-grid">
+          <div class="detail-item">
+            <span class="detail-label">Engine:</span>
+            <span class="detail-value">{{ car1Details.engineSize }}L</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Mileage:</span>
+            <span class="detail-value">{{ car1Details.mileage | number }} km</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Fuel Type:</span>
+            <span class="detail-value">{{ car1Details.fuelType }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Transmission:</span>
+            <span class="detail-value">{{ car1Details.transmission }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">MPG:</span>
+            <span class="detail-value">{{ car1Details.mpg }}</span>
+          </div>
+          <div class="detail-item" *ngIf="car1Details.price">
+            <span class="detail-label">List Price:</span>
+            <span class="detail-value">€{{ car1Details.price | number }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div class="car-card" [class.winner]="getWinnerClass(2)" [class.tie]="getWinnerClass(0)">
+      <div class="car-header">
+        <h2>Car 2</h2>
+        <span class="winner-badge" *ngIf="result?.winner === 2">🏆 Winner</span>
+      </div>
+      
+      <form [formGroup]="car2Form">
+        <mat-form-field appearance="outline">
+          <mat-label>Brand</mat-label>
+          <mat-select formControlName="brand">
+            <mat-option *ngFor="let brand of brands" [value]="brand">
+              {{ brand | titlecase }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Model</mat-label>
+          <mat-select formControlName="model" [disabled]="!car2Form.get('brand')?.value">
+            <mat-option *ngIf="loadingCar2Models" disabled>Loading...</mat-option>
+            <mat-option *ngFor="let model of car2Models" [value]="model">
+              {{ model }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Year</mat-label>
+          <mat-select formControlName="year" [disabled]="!car2Form.get('model')?.value">
+            <mat-option *ngIf="loadingCar2Years" disabled>Loading...</mat-option>
+            <mat-option *ngFor="let year of car2Years" [value]="year">
+              {{ year }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
+
+    
+      <div class="car-details" *ngIf="car2Details">
+        <h4>Car Specifications</h4>
+        <div *ngIf="loadingCar2Details" class="loading-details">Loading details...</div>
+        <div *ngIf="!loadingCar2Details" class="detail-grid">
+          <div class="detail-item">
+            <span class="detail-label">Engine:</span>
+            <span class="detail-value">{{ car2Details.engineSize }}L</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Mileage:</span>
+            <span class="detail-value">{{ car2Details.mileage | number }} km</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Fuel Type:</span>
+            <span class="detail-value">{{ car2Details.fuelType }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Transmission:</span>
+            <span class="detail-value">{{ car2Details.transmission }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">MPG:</span>
+            <span class="detail-value">{{ car2Details.mpg }}</span>
+          </div>
+          <div class="detail-item" *ngIf="car2Details.price">
+            <span class="detail-label">List Price:</span>
+            <span class="detail-value">€{{ car2Details.price | number }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="advanced-options">
+    <div class="toggle-advanced" (click)="showAdvanced = !showAdvanced">
+      <span class="material-icons">{{ showAdvanced ? 'expand_less' : 'expand_more' }}</span>
+      <span>Customize your priorities (optional)</span>
+    </div>
+    
+    <div class="weights-panel" *ngIf="showAdvanced">
+      <h3>What matters most to you?</h3>
+      <p class="weight-note">Adjust the sliders to prioritize what's important</p>
+      
+      <form [formGroup]="weightsForm">
+        <div class="weight-item">
+          <label>🏎️ Performance</label>
+          <mat-slider [min]="0" [max]="100" step="1">
+            <input matSliderThumb formControlName="performance">
+          </mat-slider>
+          <span class="weight-value">{{ weightsForm.get('performance')?.value }}%</span>
+        </div>
+
+        <div class="weight-item">
+          <label>💰 Value for Money</label>
+          <mat-slider [min]="0" [max]="100" step="1">
+            <input matSliderThumb formControlName="value">
+          </mat-slider>
+          <span class="weight-value">{{ weightsForm.get('value')?.value }}%</span>
+        </div>
+
+        <div class="weight-item">
+          <label>⚡ Fuel Efficiency</label>
+          <mat-slider [min]="0" [max]="100" step="1">
+            <input matSliderThumb formControlName="efficiency">
+          </mat-slider>
+          <span class="weight-value">{{ weightsForm.get('efficiency')?.value }}%</span>
+        </div>
+
+        <div class="weight-item">
+          <label>🆕 Modernity</label>
+          <mat-slider [min]="0" [max]="100" step="1">
+            <input matSliderThumb formControlName="modernity">
+          </mat-slider>
+          <span class="weight-value">{{ weightsForm.get('modernity')?.value }}%</span>
+        </div>
+
+        <div class="weight-item">
+          <label>🔧 Low Mileage</label>
+          <mat-slider [min]="0" [max]="100" step="1">
+            <input matSliderThumb formControlName="practicality">
+          </mat-slider>
+          <span class="weight-value">{{ weightsForm.get('practicality')?.value }}%</span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  
+  <div class="action-buttons">
+    <button class="compare-btn" (click)="submit()" 
+            [disabled]="car1Form.invalid || car2Form.invalid || !car1Details || !car2Details || loading">
+      {{ loading ? 'Comparing...' : 'Compare Cars' }}
+    </button>
+    <button class="reset-btn" (click)="resetComparison()">
+      Reset
+    </button>
+  </div>
+
+  
+  <div class="results" *ngIf="result && !loading">
+    <div class="recommendation-banner" 
+         [ngClass]="{'winner-car1': result.winner === 1, 'winner-car2': result.winner === 2, 'tie': result.winner === 0}">
+      <span class="material-icons">{{ result.winner !== 0 ? 'emoji_events' : 'handshake' }}</span>
+      <span>{{ result.recommendation }}</span>
+    </div>
+
+    <div class="comparison-results">
+  
+      <div class="result-car">
+        <h3>{{ result.car1.brand | titlecase }} {{ result.car1.model }} ({{ result.car1.year }})</h3>
+        
+        <div class="price-section">
+          <span class="price-label">Fair Market Price:</span>
+          <span class="price-value">€{{ result.car1.fair_price_eur | number:'1.0-0' }}</span>
+        </div>
+
+        <div class="score-breakdown">
+          <h4>Score Breakdown</h4>
+          <div *ngFor="let key of getScoreKeys(result.car1.scores)">
+            <div class="score-item">
+              <span class="score-label">{{ key | titlecase }}</span>
+              <div class="score-bar-container">
+                <div class="score-bar" 
+                     [style.width.%]="getScoreValue(result.car1.scores, key)" 
+                     [class]="getScoreClass(getScoreValue(result.car1.scores, key))"></div>
+              </div>
+              <span class="score-value">{{ getScoreValue(result.car1.scores, key) }}</span>
+            </div>
+          </div>
+          <div class="total-score">
+            <strong>Total Score: {{ result.car1.total_score }}</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="vs-result">VS</div>
+
+      <div class="result-car">
+        <h3>{{ result.car2.brand | titlecase }} {{ result.car2.model }} ({{ result.car2.year }})</h3>
+        
+        <div class="price-section">
+          <span class="price-label">Fair Market Price:</span>
+          <span class="price-value">€{{ result.car2.fair_price_eur | number:'1.0-0' }}</span>
+        </div>
+
+        <div class="score-breakdown">
+          <h4>Score Breakdown</h4>
+          <div *ngFor="let key of getScoreKeys(result.car2.scores)">
+            <div class="score-item">
+              <span class="score-label">{{ key | titlecase }}</span>
+              <div class="score-bar-container">
+                <div class="score-bar" 
+                     [style.width.%]="getScoreValue(result.car2.scores, key)" 
+                     [class]="getScoreClass(getScoreValue(result.car2.scores, key))"></div>
+              </div>
+              <span class="score-value">{{ getScoreValue(result.car2.scores, key) }}</span>
+            </div>
+          </div>
+          <div class="total-score">
+            <strong>Total Score: {{ result.car2.total_score }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

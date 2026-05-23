@@ -11,10 +11,18 @@ export class Endpoints {
   constructor(private http: HttpClient) {}
 
   predict(data: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, data);
+    return this.http.post<any>(`${this.apiUrl}/predict`, data);
   }
 
   evaluate(data: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/evaluate`, data);
+  }
+
+  compare(car1: any, car2: any, weights?: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/compare`, {
+      car1: car1,
+      car2: car2,
+      weights: weights
+    });
   }
 }
