@@ -25,7 +25,6 @@ export class PriceEvaluator {
   result: any = null;
   loading = false;
 
-  brands = ['audi', 'bmw', 'ford', 'hyundi', 'merc', 'skoda', 'toyota', 'vauxhall', 'vw'];
   fuelTypes = ['Petrol', 'Diesel', 'Hybrid', 'Electric'];
   transmissions = ['Manual', 'Automatic', 'Semi-Auto'];
 

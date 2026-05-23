@@ -16,11 +16,7 @@
 
       <mat-form-field appearance="outline" hideRequiredMarker>
         <mat-label>Brand</mat-label>
-        <mat-select formControlName="brand">
-          @for (b of brands; track b) {
-            <mat-option [value]="b">{{ b | titlecase }}</mat-option>
-          }
-        </mat-select>
+        <input matInput formControlName="brand">
       </mat-form-field>
 
       <mat-form-field appearance="outline" hideRequiredMarker>
