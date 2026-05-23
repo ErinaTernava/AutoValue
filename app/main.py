@@ -4,9 +4,12 @@ import pandas as pd
 from fastapi import FastAPI, HTTPException
 from app.schemas import CarInput, PriceOutput, EvaluateInput, EvaluateOutput, CompareInput, CompareOutput, CarCompareOutput, CarBasicInfo
 from fastapi.middleware.cors import CORSMiddleware
+from app.analytics import router as analytics_router
+
 from typing import Optional
 
 app = FastAPI(title="CarPrice API", version="1.0")
+app.include_router(analytics_router)
 
 model_low       = joblib.load("model/model_low.pkl")
 model_mid       = joblib.load("model/model_mid.pkl")
