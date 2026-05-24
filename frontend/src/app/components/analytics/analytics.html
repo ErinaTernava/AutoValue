@@ -1,0 +1,65 @@
+<app-header />
+<div class="bg"></div>
+
+<div class="wrapper">
+  <div class="page-header">
+    <h2>Dataset Analytics</h2>
+
+    <div class="filters" *ngIf="!loading">
+      <div class="filter-group">
+        <label>Brand</label>
+        <select [(ngModel)]="filters.brand" (ngModelChange)="onFilterChange()">
+          <option *ngFor="let b of brands" [value]="b">
+            {{ b === 'all' ? 'All Brands' : b | titlecase }}
+          </option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Year from</label>
+        <select [(ngModel)]="filters.year_min" (ngModelChange)="onFilterChange()">
+          <option *ngFor="let y of [1998,2000,2005,2010,2015,2018,2019,2020]" [value]="y">{{ y }}</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Year to</label>
+        <select [(ngModel)]="filters.year_max" (ngModelChange)="onFilterChange()">
+          <option *ngFor="let y of [2000,2005,2010,2015,2018,2019,2020]" [value]="y">{{ y }}</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Price range</label>
+        <select [(ngModel)]="selectedPriceRange" (ngModelChange)="onFilterChange()">
+          <option *ngFor="let r of priceRanges; let i = index" [value]="i">{{ r.label }}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading">Loading charts...</div>
+
+  <div *ngIf="!loading" class="grid">
+    <div class="card wide">
+      <h3>Cars by Brand</h3>
+      <canvas #brandsChart></canvas>
+    </div>
+    <div class="card">
+      <h3>Fuel Types</h3>
+      <canvas #fuelChart></canvas>
+    </div>
+    <div class="card">
+      <h3>Transmission</h3>
+      <canvas #transmissionChart></canvas>
+    </div>
+    <div class="card">
+      <h3>Mileage Distribution</h3>
+      <canvas #mileageChart></canvas>
+    </div>
+    <div class="card">
+      <h3>Car Clusters</h3>
+      <canvas #clusterChart></canvas>
+    </div>
+  </div>
+</div>

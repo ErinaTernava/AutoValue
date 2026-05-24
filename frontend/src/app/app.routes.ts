@@ -3,6 +3,7 @@ import { Index } from './components/index/index';
 import { PriceSuggester } from './components/price-suggester/price-suggester';
 import { PriceEvaluator } from './components/price-evaluator/price-evaluator';
 import { CarComparison } from './components/car-comparison/car-comparison';
+import { Analytics } from './components/analytics/analytics';
 
 
 
@@ -22,5 +23,9 @@ export const routes: Routes = [
   {
     path: '',
     component: Index,
+  },
+  { 
+    path: 'analytics', 
+    component: Analytics 
   },
 ];
