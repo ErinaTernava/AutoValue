@@ -15,6 +15,14 @@ for f in files:
 
 df = pd.concat(dfs, ignore_index=True)
 
+df["brand"] = df["brand"].replace({
+    "hyundi": "Hyundai",
+    "merc": "Mercedes",
+    "vw": "Volkswagen"
+})
+
+df["brand"] = df["brand"].str.title()
+
 df = df.drop(columns=["tax", "tax(£)"])
 
 df = df.dropna(subset=["mpg"])
@@ -52,8 +60,8 @@ print(df["fuelType"].value_counts())
 print("\nBrands:")
 print(df["brand"].value_counts())
 
-joblib.dump(df, "processed/df_cleaned.pkl")
-print("\nSaved to processed/df_cleaned.pkl")
+joblib.dump(df, "processed/dataCleaned.pkl")
+print("\nSaved to processed/dataCleaned.pkl")
 
 df.to_csv("data/dataCleaned.csv", index=False)
-print("Also saved to data/df_cleaned.csv")
+print("Also saved to data/dataCleaned.csv")
