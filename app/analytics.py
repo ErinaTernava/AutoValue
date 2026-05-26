@@ -73,3 +73,5 @@ def clustering(brand: Optional[str] = Query(default=None),
     df_copy = filtered.copy()
     df_copy["cluster"] = clusters
     return {"cluster_counts": df_copy["cluster"].value_counts().to_dict()}
+
+    

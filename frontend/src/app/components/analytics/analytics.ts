@@ -73,14 +73,24 @@ export class Analytics implements OnInit {
     this.loadAll();
   }
 
-  renderAll() {
-    this.makeBar('brandsChart', this.brandsRef, this.allData.brands, 'Cars by Brand', '#4a9eff');
-    this.makeDoughnut('fuelChart', this.fuelRef, this.allData.fuel, 'Fuel Types');
-    this.makeDoughnut('transmissionChart', this.transmissionRef, this.allData.transmission, 'Transmission');
-    this.makeBar('mileageChart', this.mileageRef, this.allData.mileage, 'Mileage Groups', '#7b61ff');
-    this.makeBar('clusterChart', this.clusterRef, this.allData.clusters, 'Car Clusters', '#34d399');
-  }
+renderAll() {
+  this.makeBar('brandsChart', this.brandsRef, this.allData.brands, 'Cars by Brand', '#4a9eff');
+  this.makeDoughnut('fuelChart', this.fuelRef, this.allData.fuel, 'Fuel Types');
+  this.makeDoughnut('transmissionChart', this.transmissionRef, this.allData.transmission, 'Transmission');
+  this.makeBar('mileageChart', this.mileageRef, this.allData.mileage, 'Mileage Groups', '#7b61ff');
 
+  const clusterLabels: Record<string, string> = {
+    '0': 'Nearly New / Premium',
+    '1': 'High Mileage / Budget',
+    '2': 'Mid-Range / Average'
+  };
+  const renamedClusters: Record<string, number> = {};
+  for (const key of Object.keys(this.allData.clusters)) {
+    const label = clusterLabels[key] ?? `Cluster ${key}`;
+    renamedClusters[label] = this.allData.clusters[key];
+  }
+  this.makeBar('clusterChart', this.clusterRef, renamedClusters, 'Car Clusters', '#34d399');
+}
   makeBar(id: string, ref: ElementRef, data: Record<string, number>, label: string, color: string) {
     if (this.charts.has(id)) this.charts.get(id)!.destroy();
     const chart = new Chart(ref.nativeElement, {

@@ -1,46 +1,54 @@
 <app-header />
-
 <div class="bg"></div>
 
 <div class="wrapper">
   <div class="card">
     <h3>Car Input</h3>
     <form [formGroup]="form" (ngSubmit)="submit()">
-      @if(form.dirty){
+      @if(form.dirty) {
         <div class="reset-button" (click)="resetForm()">
-          <span class="material-icons">
-            refresh
-          </span>
+          <span class="material-icons">refresh</span>
         </div>
       }
+
       <mat-form-field appearance="outline">
         <mat-label>Brand</mat-label>
-        <input matInput formControlName="brand">
+        <mat-select formControlName="brand">
+          <mat-option *ngFor="let b of brands" [value]="b">{{ b | titlecase }}</mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Model</mat-label>
-        <input matInput formControlName="model">
+        <mat-select formControlName="model" [disabled]="!models.length">
+          <mat-option *ngFor="let m of models" [value]="m">{{ m }}</mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Year</mat-label>
-        <input matInput type="number" formControlName="year">
+        <mat-select formControlName="year" [disabled]="!years.length">
+          <mat-option *ngFor="let y of years" [value]="y">{{ y }}</mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Mileage</mat-label>
-        <input matInput type="number" formControlName="mileage">
+        <input matInput type="number" formControlName="mileage" placeholder="e.g. 45000">
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Fuel Type</mat-label>
-        <input matInput formControlName="fuelType">
+        <mat-select formControlName="fuelType">
+          <mat-option *ngFor="let f of fuelTypes" [value]="f">{{ f }}</mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Transmission</mat-label>
-        <input matInput formControlName="transmission">
+        <mat-select formControlName="transmission">
+          <mat-option *ngFor="let t of transmissions" [value]="t">{{ t }}</mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -53,8 +61,8 @@
         <input matInput type="number" formControlName="mpg">
       </mat-form-field>
 
-      <button type="submit">
-        Suggest Price
+      <button type="submit" [disabled]="loading">
+        {{ loading ? 'Calculating...' : 'Suggest Price' }}
       </button>
     </form>
   </div>
@@ -62,34 +70,27 @@
   <div class="result-card">
     <h3>Result</h3>
     @if (loading) {
-      <div class="loading">
-        Calculating price...
-      </div>
+      <div class="loading">Calculating price...</div>
     }
-
     @if (result) {
       <div class="price-box">
         <div class="price-item">
           <span>Low Price</span>
-          <h2>€{{ result.low_price_eur | number:'1.0-0'}}</h2>
+          <h2>€{{ result.low_price_eur | number:'1.0-0' }}</h2>
         </div>
-
         <div class="price-item ideal">
           <div>
-          <span>Fair Price</span>
-          <h2>€{{ result.fair_price_eur | number:'1.0-0' }}</h2></div>
+            <span>Fair Price</span>
+            <h2>€{{ result.fair_price_eur | number:'1.0-0' }}</h2>
+          </div>
           <div class="suggestion">We suggest this price</div>
         </div>
-
         <div class="price-item">
           <span>High Price</span>
           <h2>€{{ result.high_price_eur | number:'1.0-0' }}</h2>
         </div>
       </div>
-
-      <div class="summary">
-        {{ result.summary_eur }}
-      </div>
+      <div class="summary">{{ result.summary_eur }}</div>
     }
   </div>
 </div>

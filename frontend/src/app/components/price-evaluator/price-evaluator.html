@@ -1,5 +1,4 @@
 <app-header />
-
 <div class="bg"></div>
 
 <div class="wrapper">
@@ -16,22 +15,28 @@
 
       <mat-form-field appearance="outline" hideRequiredMarker>
         <mat-label>Brand</mat-label>
-        <input matInput formControlName="brand">
+        <mat-select formControlName="brand">
+          <mat-option *ngFor="let b of brands" [value]="b">{{ b | titlecase }}</mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline" hideRequiredMarker>
         <mat-label>Model</mat-label>
-        <input matInput formControlName="model">
+        <mat-select formControlName="model" [disabled]="!models.length">
+          <mat-option *ngFor="let m of models" [value]="m">{{ m }}</mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline" hideRequiredMarker>
         <mat-label>Year</mat-label>
-        <input matInput type="number" formControlName="year">
+        <mat-select formControlName="year" [disabled]="!years.length">
+          <mat-option *ngFor="let y of years" [value]="y">{{ y }}</mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline" hideRequiredMarker>
         <mat-label>Mileage</mat-label>
-        <input matInput type="number" formControlName="mileage">
+        <input matInput type="number" formControlName="mileage" placeholder="e.g. 45000">
       </mat-form-field>
 
       <mat-form-field appearance="outline" hideRequiredMarker>
@@ -96,32 +101,18 @@
         <span class="savings-label">{{ savingsLabel }}</span>
       </div>
 
-      @if (result.savings_eur > 0) {
+      <div class="price-comparison">
+        <div class="price-item asked">
+          <span>Asked Price</span>
+          <h2>€{{ result.asked_price_eur | number:'1.0-0' }}</h2>
+        </div>
+      </div>
 
-  <div class="price-comparison">
-    <div class="price-item asked">
-      <span>Asked Price</span>
-      <h2>€{{ result.asked_price_eur | number:'1.0-0' }}</h2>
-    </div>
-  </div>
+      <div class="divider">vs. market prediction</div>
 
-}
-
-@if (result.savings_eur < 0) {
-
-  <div class="price-comparison">
-    <div class="price-item asked">
-      <span>Asked Price</span>
-      <h2>€{{ result.asked_price_eur | number:'1.0-0' }}</h2>
-    </div>
-  </div>
-
-  <div class="divider">vs. market prediction</div>
-
-  <div class="summary">
-    Market range: {{ result.summary_eur }}
-  </div>
-}
+      <div class="summary">
+        Market range: {{ result.summary_eur }}
+      </div>
     }
   </div>
 </div>
