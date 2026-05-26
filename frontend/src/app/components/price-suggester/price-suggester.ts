@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Endpoints } from '../../services/endpoints';
 import { CarDataService } from '../../services/car-data.service';
 import { Header } from '../common/header/header';
@@ -48,6 +48,16 @@ export class PriceSuggester implements OnInit {
       transmission: [''],
       engineSize: [''],
       mpg: [''],
+    });
+    this.form = this.fb.group({
+      brand: ['', Validators.required],
+      model: ['', Validators.required],
+      year: ['', Validators.required],
+      mileage: ['', [Validators.required, Validators.min(0)]],
+      fuelType: ['', Validators.required],
+      transmission: ['', Validators.required],
+      engineSize: ['', [Validators.required, Validators.min(0)]],
+      mpg: ['', [Validators.required, Validators.min(0)]]
     });
   }
 

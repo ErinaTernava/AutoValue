@@ -1,6 +1,5 @@
 <app-header />
 <div class="bg"></div>
-
 <div class="wrapper">
   <div class="card">
     <h3>Car Input</h3>
@@ -10,87 +9,177 @@
           <span class="material-icons">refresh</span>
         </div>
       }
-
       <mat-form-field appearance="outline">
         <mat-label>Brand</mat-label>
         <mat-select formControlName="brand">
-          <mat-option *ngFor="let b of brands" [value]="b">{{ b | titlecase }}</mat-option>
+          <mat-option *ngFor="let b of brands" [value]="b">
+            {{ b | titlecase }}
+          </mat-option>
         </mat-select>
+        @if(form.get('brand')?.touched &&
+            form.get('brand')?.hasError('required')) {
+          <mat-error>
+            Brand is required
+          </mat-error>
+        }
       </mat-form-field>
-
       <mat-form-field appearance="outline">
         <mat-label>Model</mat-label>
         <mat-select formControlName="model" [disabled]="!models.length">
           <mat-option *ngFor="let m of models" [value]="m">{{ m }}</mat-option>
         </mat-select>
+        @if(form.get('model')?.touched &&
+            form.get('model')?.hasError('required')) {
+          <mat-error>
+            Model is required
+          </mat-error>
+        }
       </mat-form-field>
-
       <mat-form-field appearance="outline">
         <mat-label>Year</mat-label>
-        <mat-select formControlName="year" [disabled]="!years.length">
-          <mat-option *ngFor="let y of years" [value]="y">{{ y }}</mat-option>
+        <mat-select
+          formControlName="year"
+          [disabled]="!years.length">
+          <mat-option *ngFor="let y of years" [value]="y">
+            {{ y }}
+          </mat-option>
         </mat-select>
+        @if(form.get('year')?.touched &&
+            form.get('year')?.hasError('required')) {
+          <mat-error>
+            Year is required
+          </mat-error>
+        }
       </mat-form-field>
-
       <mat-form-field appearance="outline">
         <mat-label>Mileage</mat-label>
-        <input matInput type="number" formControlName="mileage" placeholder="e.g. 45000">
+        <input
+          matInput
+          type="number"
+          formControlName="mileage"
+          placeholder="e.g. 45000">
+        @if(form.get('mileage')?.touched) {
+          @if(form.get('mileage')?.hasError('required')) {
+            <mat-error>
+              Mileage is required
+            </mat-error>
+          }
+          @if(form.get('mileage')?.hasError('min')) {
+            <mat-error>
+              Mileage cannot be negative
+            </mat-error>
+          }
+        }
       </mat-form-field>
-
       <mat-form-field appearance="outline">
         <mat-label>Fuel Type</mat-label>
         <mat-select formControlName="fuelType">
-          <mat-option *ngFor="let f of fuelTypes" [value]="f">{{ f }}</mat-option>
+          <mat-option *ngFor="let f of fuelTypes" [value]="f">
+            {{ f }}
+          </mat-option>
         </mat-select>
+        @if(form.get('fuelType')?.touched &&
+            form.get('fuelType')?.hasError('required')) {
+          <mat-error>
+            Fuel type is required
+          </mat-error>
+        }
       </mat-form-field>
-
       <mat-form-field appearance="outline">
         <mat-label>Transmission</mat-label>
         <mat-select formControlName="transmission">
-          <mat-option *ngFor="let t of transmissions" [value]="t">{{ t }}</mat-option>
+          <mat-option *ngFor="let t of transmissions" [value]="t">
+            {{ t }}
+          </mat-option>
         </mat-select>
+        @if(form.get('transmission')?.touched &&
+            form.get('transmission')?.hasError('required')) {
+          <mat-error>
+            Transmission is required
+          </mat-error>
+        }
       </mat-form-field>
-
       <mat-form-field appearance="outline">
         <mat-label>Engine Size</mat-label>
-        <input matInput type="number" formControlName="engineSize">
+        <input
+          matInput
+          type="number"
+          formControlName="engineSize">
+        @if(form.get('engineSize')?.touched) {
+          @if(form.get('engineSize')?.hasError('required')) {
+            <mat-error>
+              Engine size is required
+            </mat-error>
+          }
+          @if(form.get('engineSize')?.hasError('min')) {
+            <mat-error>
+              Engine size cannot be negative
+            </mat-error>
+          }
+        }
       </mat-form-field>
-
       <mat-form-field appearance="outline">
         <mat-label>MPG</mat-label>
-        <input matInput type="number" formControlName="mpg">
+        <input
+          matInput
+          type="number"
+          formControlName="mpg">
+        @if(form.get('mpg')?.touched) {
+          @if(form.get('mpg')?.hasError('required')) {
+            <mat-error>
+              MPG is required
+            </mat-error>
+          }
+          @if(form.get('mpg')?.hasError('min')) {
+            <mat-error>
+              MPG cannot be negative
+            </mat-error>
+          }
+        }
       </mat-form-field>
-
-      <button type="submit" [disabled]="loading">
+      <button
+        type="submit"
+        [disabled]="loading || form.invalid">
         {{ loading ? 'Calculating...' : 'Suggest Price' }}
       </button>
     </form>
   </div>
-
   <div class="result-card">
     <h3>Result</h3>
     @if (loading) {
-      <div class="loading">Calculating price...</div>
+      <div class="loading">
+        Calculating price...
+      </div>
     }
     @if (result) {
       <div class="price-box">
         <div class="price-item">
           <span>Low Price</span>
-          <h2>€{{ result.low_price_eur | number:'1.0-0' }}</h2>
+          <h2>
+            €{{ result.low_price_eur | number:'1.0-0' }}
+          </h2>
         </div>
         <div class="price-item ideal">
           <div>
             <span>Fair Price</span>
-            <h2>€{{ result.fair_price_eur | number:'1.0-0' }}</h2>
+            <h2>
+              €{{ result.fair_price_eur | number:'1.0-0' }}
+            </h2>
           </div>
-          <div class="suggestion">We suggest this price</div>
+          <div class="suggestion">
+            We suggest this price
+          </div>
         </div>
         <div class="price-item">
           <span>High Price</span>
-          <h2>€{{ result.high_price_eur | number:'1.0-0' }}</h2>
+          <h2>
+            €{{ result.high_price_eur | number:'1.0-0' }}
+          </h2>
         </div>
       </div>
-      <div class="summary">{{ result.summary_eur }}</div>
+      <div class="summary">
+        {{ result.summary_eur }}
+      </div>
     }
   </div>
 </div>

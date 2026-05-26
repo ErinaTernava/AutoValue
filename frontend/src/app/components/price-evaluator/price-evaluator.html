@@ -5,40 +5,54 @@
   <div class="card">
     <h3>Price Evaluator</h3>
     <p class="subtitle">Enter the car details and the seller's asking price to find out if it's a good deal.</p>
-
     <form [formGroup]="form" (ngSubmit)="submit()">
       @if (form.dirty) {
         <div class="reset-button" (click)="resetForm()">
           <span class="material-icons">refresh</span>
         </div>
       }
-
       <mat-form-field appearance="outline" hideRequiredMarker>
         <mat-label>Brand</mat-label>
         <mat-select formControlName="brand">
           <mat-option *ngFor="let b of brands" [value]="b">{{ b | titlecase }}</mat-option>
         </mat-select>
+        @if (form.get('brand')?.touched &&
+             form.get('brand')?.hasError('required')) {
+          <mat-error>Brand is required</mat-error>
+        }
       </mat-form-field>
-
       <mat-form-field appearance="outline" hideRequiredMarker>
         <mat-label>Model</mat-label>
         <mat-select formControlName="model" [disabled]="!models.length">
           <mat-option *ngFor="let m of models" [value]="m">{{ m }}</mat-option>
         </mat-select>
+        @if (form.get('model')?.touched &&
+             form.get('model')?.hasError('required')) {
+          <mat-error>Model is required</mat-error>
+        }
       </mat-form-field>
-
       <mat-form-field appearance="outline" hideRequiredMarker>
         <mat-label>Year</mat-label>
         <mat-select formControlName="year" [disabled]="!years.length">
           <mat-option *ngFor="let y of years" [value]="y">{{ y }}</mat-option>
         </mat-select>
+        @if (form.get('year')?.touched &&
+             form.get('year')?.hasError('required')) {
+          <mat-error>Year is required</mat-error>
+        }
       </mat-form-field>
-
       <mat-form-field appearance="outline" hideRequiredMarker>
         <mat-label>Mileage</mat-label>
         <input matInput type="number" formControlName="mileage" placeholder="e.g. 45000">
+        @if (form.get('mileage')?.touched) {
+          @if (form.get('mileage')?.hasError('required')) {
+            <mat-error>Mileage is required</mat-error>
+          }
+          @if (form.get('mileage')?.hasError('min')) {
+            <mat-error>Mileage cannot be negative</mat-error>
+          }
+        }
       </mat-form-field>
-
       <mat-form-field appearance="outline" hideRequiredMarker>
         <mat-label>Fuel Type</mat-label>
         <mat-select formControlName="fuelType">
@@ -46,8 +60,11 @@
             <mat-option [value]="f">{{ f }}</mat-option>
           }
         </mat-select>
+        @if (form.get('fuelType')?.touched &&
+             form.get('fuelType')?.hasError('required')) {
+          <mat-error>Fuel type is required</mat-error>
+        }
       </mat-form-field>
-
       <mat-form-field appearance="outline" hideRequiredMarker>
         <mat-label>Transmission</mat-label>
         <mat-select formControlName="transmission">
@@ -55,23 +72,47 @@
             <mat-option [value]="t">{{ t }}</mat-option>
           }
         </mat-select>
+        @if (form.get('transmission')?.touched &&
+             form.get('transmission')?.hasError('required')) {
+          <mat-error>Transmission is required</mat-error>
+        }
       </mat-form-field>
-
       <mat-form-field appearance="outline" hideRequiredMarker>
         <mat-label>Engine Size</mat-label>
         <input matInput type="number" step="0.1" formControlName="engineSize">
+        @if (form.get('engineSize')?.touched) {
+          @if (form.get('engineSize')?.hasError('required')) {
+            <mat-error>Engine size is required</mat-error>
+          }
+          @if (form.get('engineSize')?.hasError('min')) {
+            <mat-error>Engine size cannot be negative</mat-error>
+          }
+        }
       </mat-form-field>
-
       <mat-form-field appearance="outline" hideRequiredMarker>
         <mat-label>MPG</mat-label>
         <input matInput type="number" formControlName="mpg">
+        @if (form.get('mpg')?.touched) {
+          @if (form.get('mpg')?.hasError('required')) {
+            <mat-error>MPG is required</mat-error>
+          }
+          @if (form.get('mpg')?.hasError('min')) {
+            <mat-error>MPG cannot be negative</mat-error>
+          }
+        }
       </mat-form-field>
-
       <mat-form-field appearance="outline" class="asked-field" hideRequiredMarker>
         <mat-label>Seller's Asking Price (€)</mat-label>
         <input matInput type="number" formControlName="asked_price">
+        @if (form.get('asked_price')?.touched) {
+          @if (form.get('asked_price')?.hasError('required')) {
+            <mat-error>Asking price is required</mat-error>
+          }
+          @if (form.get('asked_price')?.hasError('min')) {
+            <mat-error>Price cannot be negative</mat-error>
+          }
+        }
       </mat-form-field>
-
       <button type="submit" [disabled]="form.invalid || loading">
         {{ loading ? 'Evaluating...' : 'Evaluate Price' }}
       </button>
@@ -100,16 +141,13 @@
         <span class="verdict-text">{{ result.verdict }}</span>
         <span class="savings-label">{{ savingsLabel }}</span>
       </div>
-
       <div class="price-comparison">
         <div class="price-item asked">
           <span>Asked Price</span>
           <h2>€{{ result.asked_price_eur | number:'1.0-0' }}</h2>
         </div>
       </div>
-
       <div class="divider">vs. market prediction</div>
-
       <div class="summary">
         Market range: {{ result.summary_eur }}
       </div>
