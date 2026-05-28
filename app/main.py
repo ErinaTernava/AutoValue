@@ -5,6 +5,7 @@ from fastapi import FastAPI, HTTPException
 from app.schemas import CarInput, PriceOutput, EvaluateInput, EvaluateOutput, CompareInput, CompareOutput, CarCompareOutput, CarBasicInfo
 from fastapi.middleware.cors import CORSMiddleware
 from app.analytics import router as analytics_router
+from app.services.vin_service import decode_vin
 
 from typing import Optional
 
@@ -306,7 +307,9 @@ def compare(cars: CompareInput):
         recommendation=recommendation
     )
 
-
+@app.get("/vin/{vin}")
+def get_vin(vin: str):
+    return decode_vin(vin)
 
 app.add_middleware(
     CORSMiddleware,
