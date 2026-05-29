@@ -59,12 +59,14 @@ export class CarComparison implements OnInit {
     private carDataService: CarDataService
   ) {
     this.car1Form = this.fb.group({
+      vin: [],
       brand: ['', Validators.required],
       model: ['', Validators.required],
       year: ['', Validators.required]
     });
     
     this.car2Form = this.fb.group({
+      vin: [],
       brand: ['', Validators.required],
       model: ['', Validators.required],
       year: ['', Validators.required]
@@ -82,16 +84,6 @@ export class CarComparison implements OnInit {
   ngOnInit() {
     this.loadBrands();
     
-   
-    this.car1Form.get('brand')?.valueChanges.subscribe(brand => {
-      if (brand) {
-        this.loadModelsForCar1(brand);
-        this.car1Form.patchValue({ model: '', year: '' });
-        this.car1Details = null;
-      }
-    });
-    
-   
     this.car1Form.get('model')?.valueChanges.subscribe(model => {
       const brand = this.car1Form.get('brand')?.value;
       if (brand && model) {
@@ -110,16 +102,6 @@ export class CarComparison implements OnInit {
       }
     });
     
-    
-    this.car2Form.get('brand')?.valueChanges.subscribe(brand => {
-      if (brand) {
-        this.loadModelsForCar2(brand);
-        this.car2Form.patchValue({ model: '', year: '' });
-        this.car2Details = null;
-      }
-    });
-    
-  
     this.car2Form.get('model')?.valueChanges.subscribe(model => {
       const brand = this.car2Form.get('brand')?.value;
       if (brand && model) {
@@ -136,6 +118,14 @@ export class CarComparison implements OnInit {
       if (brand && model && year) {
         this.loadCarDetailsForCar2(brand, model, year);
       }
+    });
+
+    this.car1Form.get('vin')?.valueChanges.subscribe(vin => {
+      if (vin?.length > 10) this.onVinCar1();
+    });
+
+    this.car2Form.get('vin')?.valueChanges.subscribe(vin => {
+      if (vin?.length > 10) this.onVinCar2();
     });
   }
 
@@ -304,5 +294,156 @@ export class CarComparison implements OnInit {
   
   getScoreValue(scores: any, key: string): number {
     return scores ? scores[key] : 0;
+  }
+  onVinCar1() {
+    const vin = this.car1Form.get('vin')?.value;
+    if (!vin || vin.length < 17) return;
+
+    this.api.decodeVin(vin).subscribe({
+      next: (res) => {
+        const make = res.make?.toLowerCase().trim();
+        const model = res.model?.toLowerCase().trim();
+        const year = Number(res.year);
+
+        this.car1Form.patchValue(
+          {
+            brand: make
+          },
+          { emitEvent: false }
+        );
+        this.loadingCar1Models = true;
+
+        this.carDataService.getModels(make).subscribe({
+          next: (modelsRes) => {
+            this.car1Models = modelsRes.models;
+            this.loadingCar1Models = false;
+            const matchedModel = this.car1Models.find(
+              m => m.toLowerCase().trim() === model
+            );
+
+            if (!matchedModel) {
+              console.log('MODEL NOT FOUND');
+              console.log('VIN model:', model);
+              console.log('Available models:', this.car1Models);
+              return;
+            }
+
+            this.car1Form.patchValue(
+              {
+                model: matchedModel
+              },
+              { emitEvent: false }
+            );
+            this.loadingCar1Years = true;
+
+            this.carDataService.getYears(make, matchedModel).subscribe({
+              next: (yearsRes) => {
+                this.car1Years = yearsRes.years;
+                this.loadingCar1Years = false;
+
+                this.car1Form.patchValue(
+                  {
+                    year: year
+                  },
+                  { emitEvent: false }
+                );
+
+                this.loadCarDetailsForCar1(
+                  make,
+                  matchedModel,
+                  year
+                );
+              },
+              error: (err) => {
+                console.error(err);
+                this.loadingCar1Years = false;
+              }
+            });
+          },
+          error: (err) => {
+            console.error(err);
+            this.loadingCar1Models = false;
+          }
+        });
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+
+  onVinCar2() {
+    const vin = this.car2Form.get('vin')?.value;
+    if (!vin || vin.length < 17) return;
+
+    this.api.decodeVin(vin).subscribe({
+      next: (res) => {
+        const make = res.make?.toLowerCase().trim();
+        const model = res.model?.toLowerCase().trim();
+        const year = Number(res.year);
+
+        this.car2Form.patchValue(
+          {
+            brand: make
+          },
+          { emitEvent: false }
+        );
+        this.loadingCar2Models = true;
+        this.carDataService.getModels(make).subscribe({
+          next: (modelsRes) => {
+            this.car2Models = modelsRes.models;
+            this.loadingCar2Models = false;
+            const matchedModel = this.car2Models.find(
+              m => m.toLowerCase().trim() === model
+            );
+
+            if (!matchedModel) {
+              console.log('MODEL NOT FOUND');
+              console.log('VIN model:', model);
+              console.log('Available models:', this.car2Models);
+              return;
+            }
+
+            this.car2Form.patchValue(
+              {
+                model: matchedModel
+              },
+              { emitEvent: false }
+            );
+            this.loadingCar2Years = true;
+
+            this.carDataService.getYears(make, matchedModel).subscribe({
+              next: (yearsRes) => {
+                this.car2Years = yearsRes.years;
+                this.loadingCar2Years = false;
+                this.car2Form.patchValue(
+                  {
+                    year: year
+                  },
+                  { emitEvent: false }
+                );
+
+                this.loadCarDetailsForCar2(
+                  make,
+                  matchedModel,
+                  year
+                );
+              },
+              error: (err) => {
+                console.error(err);
+                this.loadingCar2Years = false;
+              }
+            });
+          },
+          error: (err) => {
+            console.error(err);
+            this.loadingCar2Models = false;
+          }
+        });
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
   }
 }

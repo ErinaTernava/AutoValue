@@ -25,4 +25,8 @@ export class Endpoints {
       weights: weights
     });
   }
+
+  decodeVin(vin: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/vin/${vin}`);
+  }
 }

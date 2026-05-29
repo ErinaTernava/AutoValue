@@ -272,3 +272,7 @@ mat-form-field {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
+.line {
+  border-bottom: 1px solid #8f8f8f;
+  margin-bottom: 15px;
+}

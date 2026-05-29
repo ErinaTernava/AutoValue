@@ -18,6 +18,11 @@
       
       <form [formGroup]="car1Form">
         <mat-form-field appearance="outline">
+          <mat-label>VIN Number (optional)</mat-label>
+          <input matInput formControlName="vin" (blur)="onVinCar1()">
+        </mat-form-field>
+        <div class="line"></div>
+        <mat-form-field appearance="outline">
           <mat-label>Brand</mat-label>
           <mat-select formControlName="brand">
             <mat-option *ngFor="let brand of brands" [value]="brand">
@@ -88,6 +93,11 @@
       </div>
       
       <form [formGroup]="car2Form">
+        <mat-form-field appearance="outline">
+          <mat-label>VIN Number (optional)</mat-label>
+          <input matInput formControlName="vin" (blur)="onVinCar2()">
+        </mat-form-field> 
+        <div class="line"></div>
         <mat-form-field appearance="outline">
           <mat-label>Brand</mat-label>
           <mat-select formControlName="brand">

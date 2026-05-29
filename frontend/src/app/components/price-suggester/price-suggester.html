@@ -10,6 +10,11 @@
         </div>
       }
       <mat-form-field appearance="outline">
+        <mat-label>VIN (optional)</mat-label>
+        <input matInput formControlName="vin">
+      </mat-form-field>
+      <div class="line"></div>
+      <mat-form-field appearance="outline">
         <mat-label>Brand</mat-label>
         <mat-select formControlName="brand">
           <mat-option *ngFor="let b of brands" [value]="b">

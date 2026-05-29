@@ -8,6 +8,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 
+interface VinResponse {
+  make?: string;
+  model?: string;
+  year?: string;
+  fuel?: string;
+  engine?: string;
+}
+
 @Component({
   selector: 'app-price-evaluator',
   imports: [
@@ -38,15 +46,16 @@ export class PriceEvaluator implements OnInit {
     private carData: CarDataService
   ) {
     this.form = this.fb.group({
-      brand:        ['', Validators.required],
-      model:        ['', Validators.required],
-      year:         ['', Validators.required],
-      mileage:      ['', [Validators.required, Validators.min(100)]],
-      fuelType:     ['', Validators.required],
+      vin: [''],
+      brand: ['', Validators.required],
+      model: ['', Validators.required],
+      year: ['', Validators.required],
+      mileage: ['', [Validators.required, Validators.min(100)]],
+      fuelType: ['', Validators.required],
       transmission: ['', Validators.required],
-      engineSize:   ['', [Validators.required, Validators.min(0.1), Validators.max(6.0)]],
-      mpg:          ['', [Validators.required, Validators.min(1)]],
-      asked_price:  ['', [Validators.required, Validators.min(0)]],
+      engineSize: ['', [Validators.required, Validators.min(0.1), Validators.max(6.0)]],
+      mpg: ['', [Validators.required, Validators.min(1)]],
+      asked_price: ['', [Validators.required, Validators.min(0)]],
     });
   }
 
@@ -59,7 +68,11 @@ export class PriceEvaluator implements OnInit {
       if (!brand) return;
       this.models = [];
       this.years = [];
-      this.form.patchValue({ model: '', year: '', fuelType: '', transmission: '', engineSize: '', mpg: '' });
+      this.form.patchValue(
+        { model: '', year: '' },
+        { emitEvent: false }
+      );
+
       this.carData.getModels(brand).subscribe(res => {
         this.models = res.models;
       });
@@ -69,7 +82,10 @@ export class PriceEvaluator implements OnInit {
       const brand = this.form.get('brand')!.value;
       if (!brand || !model) return;
       this.years = [];
-      this.form.patchValue({ year: '', fuelType: '', transmission: '', engineSize: '', mpg: '' });
+      this.form.patchValue(
+        { year: '' },
+        { emitEvent: false }
+      );
       this.carData.getYears(brand, model).subscribe(res => {
         this.years = res.years;
       });
@@ -81,12 +97,66 @@ export class PriceEvaluator implements OnInit {
       if (!brand || !model || !year) return;
       this.carData.getCarDetails(brand, model, year).subscribe(res => {
         this.form.patchValue({
-          fuelType:     res.fuelType,
+          fuelType: res.fuelType,
           transmission: res.transmission,
-          engineSize:   res.engineSize,
-          mpg:          res.mpg
-        });
+          engineSize: res.engineSize,
+          mpg: res.mpg
+        }, { emitEvent: false });
       });
+    });
+    this.form.get('vin')!.valueChanges.subscribe(vin => {
+      if (vin && vin.length >= 17) {
+        this.onVin();
+      }
+    });
+  }
+
+  onVin() {
+    const vin = this.form.get('vin')?.value;
+    if (!vin || vin.length < 17) return;
+
+    this.api.decodeVin(vin).subscribe({
+      next: (res) => {
+
+        const vinRes = res as VinResponse;
+
+        const brand = vinRes.make?.toLowerCase().trim() ?? '';
+        const model = vinRes.model?.toLowerCase().trim() ?? '';
+        const year = Number(vinRes.year);
+
+        if (!brand) return;
+
+        this.form.patchValue({ brand }, { emitEvent: false });
+
+        this.carData.getModels(brand).subscribe({
+          next: (modelsRes) => {
+
+            this.models = modelsRes.models;
+
+            const matchedModel =
+              this.models.find(m => m.toLowerCase().trim() === model) || model;
+
+            this.form.patchValue({ model: matchedModel }, { emitEvent: false });
+
+            this.carData.getYears(brand, matchedModel).subscribe({
+              next: (yearsRes) => {
+
+                this.years = yearsRes.years;
+
+                this.form.patchValue({ year }, { emitEvent: false });
+
+                this.form.patchValue({
+                  fuelType: this.mapFuel(vinRes.fuel ?? '')
+                }, { emitEvent: false });
+
+              }
+            });
+          }
+        });
+      },
+      error: (err) => {
+        console.error('VIN decode error:', err);
+      }
     });
   }
 
@@ -113,11 +183,30 @@ export class PriceEvaluator implements OnInit {
     this.result = null;
   }
 
+  mapFuel(fuel: string): string {
+    if (!fuel) return '';
+
+    const f = fuel.toLowerCase();
+
+    if (f.includes('gas')) return 'Petrol';
+    if (f.includes('petrol')) return 'Petrol';
+    if (f.includes('diesel')) return 'Diesel';
+    if (f.includes('hybrid')) return 'Hybrid';
+    if (f.includes('electric')) return 'Electric';
+
+    return fuel;
+  }
+
   get savingsLabel(): string {
     if (!this.result) return '';
     const s = this.result.savings_eur;
-    if (s > 0) return `You save €${Math.abs(s).toLocaleString('en', { maximumFractionDigits: 0 })} vs fair price`;
-    if (s < 0) return `You overpay €${Math.abs(s).toLocaleString('en', { maximumFractionDigits: 0 })} vs fair price`;
+
+    if (s > 0)
+      return `You save €${Math.abs(s).toLocaleString('en', { maximumFractionDigits: 0 })} vs fair price`;
+
+    if (s < 0)
+      return `You overpay €${Math.abs(s).toLocaleString('en', { maximumFractionDigits: 0 })} vs fair price`;
+
     return 'Exactly at fair price';
   }
 }

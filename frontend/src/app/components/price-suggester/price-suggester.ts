@@ -3,10 +3,18 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Endpoints } from '../../services/endpoints';
 import { CarDataService } from '../../services/car-data.service';
 import { Header } from '../common/header/header';
-import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
+
+interface VinResponse {
+  make?: string;
+  model?: string;
+  year?: string;
+  fuel?: string;
+  engine?: string;
+}
 
 @Component({
   selector: 'app-price-suggester',
@@ -14,7 +22,6 @@ import { CommonModule } from '@angular/common';
     ReactiveFormsModule,
     Header,
     MatFormFieldModule,
-    MatLabel,
     MatInputModule,
     MatSelectModule,
     CommonModule
@@ -40,16 +47,7 @@ export class PriceSuggester implements OnInit {
     private carData: CarDataService
   ) {
     this.form = this.fb.group({
-      brand: [''],
-      model: [''],
-      year: [''],
-      mileage: [''],
-      fuelType: [''],
-      transmission: [''],
-      engineSize: [''],
-      mpg: [''],
-    });
-    this.form = this.fb.group({
+      vin: [''],
       brand: ['', Validators.required],
       model: ['', Validators.required],
       year: ['', Validators.required],
@@ -66,38 +64,61 @@ export class PriceSuggester implements OnInit {
       this.brands = res.brands;
     });
 
-    this.form.get('brand')!.valueChanges.subscribe(brand => {
-      if (!brand) return;
-      this.models = [];
-      this.years = [];
-      this.form.patchValue({ model: '', year: '', fuelType: '', transmission: '', engineSize: '', mpg: '' });
-      this.carData.getModels(brand).subscribe(res => {
-        this.models = res.models;
-      });
+    this.form.get('vin')!.valueChanges.subscribe(vin => {
+      if (vin && vin.length >= 17) {
+        this.onVin();
+      }
     });
+  }
 
-    this.form.get('model')!.valueChanges.subscribe(model => {
-      const brand = this.form.get('brand')!.value;
-      if (!brand || !model) return;
-      this.years = [];
-      this.form.patchValue({ year: '', fuelType: '', transmission: '', engineSize: '', mpg: '' });
-      this.carData.getYears(brand, model).subscribe(res => {
-        this.years = res.years;
-      });
-    });
+  onVin() {
+    const vin = this.form.get('vin')?.value;
+    if (!vin || vin.length < 17) return;
 
-    this.form.get('year')!.valueChanges.subscribe(year => {
-      const brand = this.form.get('brand')!.value;
-      const model = this.form.get('model')!.value;
-      if (!brand || !model || !year) return;
-      this.carData.getCarDetails(brand, model, year).subscribe(res => {
-        this.form.patchValue({
-          fuelType: res.fuelType,
-          transmission: res.transmission,
-          engineSize: res.engineSize,
-          mpg: res.mpg
+    this.api.decodeVin(vin).subscribe({
+      next: (res) => {
+
+        const vinRes = res as VinResponse;
+
+        const brand = vinRes.make?.toLowerCase().trim() ?? '';
+        const model = vinRes.model?.toLowerCase().trim() ?? '';
+        const year = Number(vinRes.year);
+
+        if (!brand) return;
+
+        this.form.patchValue({ brand }, { emitEvent: false });
+
+        this.carData.getModels(brand).subscribe({
+          next: (modelsRes) => {
+
+            this.models = modelsRes.models;
+
+            const matchedModel =
+              this.models.find(
+                m => m.toLowerCase().trim() === model
+              ) || model;
+
+            this.form.patchValue({ model: matchedModel }, { emitEvent: false });
+
+            this.carData.getYears(brand, matchedModel).subscribe({
+              next: (yearsRes) => {
+
+                this.years = yearsRes.years;
+
+                this.form.patchValue({ year }, { emitEvent: false });
+
+                this.form.patchValue({
+                  fuelType: this.mapFuel(vinRes.fuel ?? '')
+                }, { emitEvent: false });
+
+              }
+            });
+          }
         });
-      });
+      },
+      error: (err) => {
+        console.error('VIN decode error:', err);
+      }
     });
   }
 
@@ -121,5 +142,17 @@ export class PriceSuggester implements OnInit {
     this.models = [];
     this.years = [];
     this.result = null;
+  }
+
+  mapFuel(fuel: string): string {
+    if (!fuel) return '';
+    const f = fuel.toLowerCase();
+    if (f.includes('gas')) return 'Petrol';
+    if (f.includes('petrol')) return 'Petrol';
+    if (f.includes('diesel')) return 'Diesel';
+    if (f.includes('hybrid')) return 'Hybrid';
+    if (f.includes('electric')) return 'Electric';
+
+    return fuel;
   }
 }
