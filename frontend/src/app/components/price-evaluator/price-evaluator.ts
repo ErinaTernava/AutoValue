@@ -39,6 +39,7 @@ export class PriceEvaluator implements OnInit {
   years: number[] = [];
   fuelTypes = ['Petrol', 'Diesel', 'Hybrid', 'Electric'];
   transmissions = ['Manual', 'Automatic', 'Semi-Auto'];
+  private brandsLoaded = false;
 
   constructor(
     private fb: FormBuilder,
@@ -60,10 +61,19 @@ export class PriceEvaluator implements OnInit {
   }
 
   ngOnInit() {
+    this.loadBrands();
+    this.setupDropdownLogic();
+    this.setupVinListener();
+  }
+
+  private loadBrands() {
     this.carData.getBrands().subscribe(res => {
       this.brands = res.brands;
+      this.brandsLoaded = true;
     });
+  }
 
+  private setupDropdownLogic() {
     this.form.get('brand')!.valueChanges.subscribe(brand => {
       if (!brand) return;
       this.models = [];
@@ -104,8 +114,15 @@ export class PriceEvaluator implements OnInit {
         }, { emitEvent: false });
       });
     });
+  }
+
+  private setupVinListener() {
     this.form.get('vin')!.valueChanges.subscribe(vin => {
-      if (vin && vin.length >= 17) {
+      if (!vin) {
+        this.resetDependentDropdowns();
+        return;
+      }
+      if (vin.length >= 17) {
         this.onVin();
       }
     });
@@ -117,30 +134,33 @@ export class PriceEvaluator implements OnInit {
 
     this.api.decodeVin(vin).subscribe({
       next: (res) => {
-
         const vinRes = res as VinResponse;
 
-        const brand = vinRes.make?.toLowerCase().trim() ?? '';
-        const model = vinRes.model?.toLowerCase().trim() ?? '';
+        const vinBrand = vinRes.make?.trim() ?? '';
+        const vinModel = vinRes.model?.trim() ?? '';
         const year = Number(vinRes.year);
 
-        if (!brand) return;
+        if (!vinBrand || !this.brandsLoaded) return;
+        const matchedBrand =
+          this.brands.find(b =>
+            b.toLowerCase().trim() === vinBrand.toLowerCase().trim()
+          ) || vinBrand;
 
-        this.form.patchValue({ brand }, { emitEvent: false });
+        this.form.patchValue({ brand: matchedBrand }, { emitEvent: false });
 
-        this.carData.getModels(brand).subscribe({
+        this.carData.getModels(matchedBrand).subscribe({
           next: (modelsRes) => {
-
             this.models = modelsRes.models;
 
             const matchedModel =
-              this.models.find(m => m.toLowerCase().trim() === model) || model;
+              this.models.find(m =>
+                m.toLowerCase().trim() === vinModel.toLowerCase().trim()
+              ) || vinModel;
 
             this.form.patchValue({ model: matchedModel }, { emitEvent: false });
 
-            this.carData.getYears(brand, matchedModel).subscribe({
+            this.carData.getYears(matchedBrand, matchedModel).subscribe({
               next: (yearsRes) => {
-
                 this.years = yearsRes.years;
 
                 this.form.patchValue({ year }, { emitEvent: false });
@@ -148,7 +168,6 @@ export class PriceEvaluator implements OnInit {
                 this.form.patchValue({
                   fuelType: this.mapFuel(vinRes.fuel ?? '')
                 }, { emitEvent: false });
-
               }
             });
           }
@@ -158,6 +177,31 @@ export class PriceEvaluator implements OnInit {
         console.error('VIN decode error:', err);
       }
     });
+  }
+
+  private resetDependentDropdowns() {
+    this.models = [];
+    this.years = [];
+
+    this.form.patchValue(
+      {
+        brand: '',
+        model: '',
+        year: '',
+        fuelType: '',
+        transmission: '',
+        engineSize: '',
+        mpg: ''
+      },
+      { emitEvent: false }
+    );
+  }
+
+  resetForm() {
+    this.form.reset();
+    this.models = [];
+    this.years = [];
+    this.result = null;
   }
 
   submit() {
@@ -174,13 +218,6 @@ export class PriceEvaluator implements OnInit {
         this.loading = false;
       },
     });
-  }
-
-  resetForm() {
-    this.form.reset();
-    this.models = [];
-    this.years = [];
-    this.result = null;
   }
 
   mapFuel(fuel: string): string {

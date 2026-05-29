@@ -40,6 +40,7 @@ export class PriceSuggester implements OnInit {
 
   fuelTypes = ['Petrol', 'Diesel', 'Hybrid', 'Electric'];
   transmissions = ['Manual', 'Automatic', 'Semi-Auto'];
+  private brandsLoaded = false;
 
   constructor(
     private fb: FormBuilder,
@@ -62,6 +63,33 @@ export class PriceSuggester implements OnInit {
   ngOnInit() {
     this.carData.getBrands().subscribe(res => {
       this.brands = res.brands;
+      this.brandsLoaded = true;
+    });
+
+    this.form.get('brand')!.valueChanges.subscribe(brand => {
+      if (!brand) return;
+
+      this.models = [];
+      this.years = [];
+
+      this.form.patchValue({ model: '', year: '' }, { emitEvent: false });
+
+      this.carData.getModels(brand).subscribe(res => {
+        this.models = res.models;
+      });
+    });
+
+    this.form.get('model')!.valueChanges.subscribe(model => {
+      const brand = this.form.get('brand')!.value;
+      if (!brand || !model) return;
+
+      this.years = [];
+
+      this.form.patchValue({ year: '' }, { emitEvent: false });
+
+      this.carData.getYears(brand, model).subscribe(res => {
+        this.years = res.years;
+      });
     });
 
     this.form.get('vin')!.valueChanges.subscribe(vin => {
@@ -80,27 +108,32 @@ export class PriceSuggester implements OnInit {
 
         const vinRes = res as VinResponse;
 
-        const brand = vinRes.make?.toLowerCase().trim() ?? '';
-        const model = vinRes.model?.toLowerCase().trim() ?? '';
+        const vinBrand = vinRes.make?.trim() ?? '';
+        const vinModel = vinRes.model?.trim() ?? '';
         const year = Number(vinRes.year);
 
-        if (!brand) return;
+        if (!vinBrand || !this.brandsLoaded) return;
 
-        this.form.patchValue({ brand }, { emitEvent: false });
+        const matchedBrand =
+          this.brands.find(b =>
+            b.toLowerCase().trim() === vinBrand.toLowerCase().trim()
+          ) || vinBrand;
 
-        this.carData.getModels(brand).subscribe({
+        this.form.patchValue({ brand: matchedBrand }, { emitEvent: false });
+
+        this.carData.getModels(matchedBrand).subscribe({
           next: (modelsRes) => {
 
             this.models = modelsRes.models;
 
             const matchedModel =
-              this.models.find(
-                m => m.toLowerCase().trim() === model
-              ) || model;
+              this.models.find(m =>
+                m.toLowerCase().trim() === vinModel.toLowerCase().trim()
+              ) || vinModel;
 
             this.form.patchValue({ model: matchedModel }, { emitEvent: false });
 
-            this.carData.getYears(brand, matchedModel).subscribe({
+            this.carData.getYears(matchedBrand, matchedModel).subscribe({
               next: (yearsRes) => {
 
                 this.years = yearsRes.years;
@@ -110,7 +143,6 @@ export class PriceSuggester implements OnInit {
                 this.form.patchValue({
                   fuelType: this.mapFuel(vinRes.fuel ?? '')
                 }, { emitEvent: false });
-
               }
             });
           }
