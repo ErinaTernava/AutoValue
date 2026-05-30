@@ -1,0 +1,27 @@
+
+    ========================================
+    RAPORTI I PASTRIMIT: UNCLEAN_FOCUS → FOCUS
+    ========================================
+    Data: 2026-05-30 19:55:36
+
+    STATISTIKAT:
+    - Rreshtat para pastrimit: 5604
+    - Rreshtat pas pastrimit: 76
+    - Rreshtat e hequr: 5528
+    - Përqindja e hequr: 98.6%
+
+    KOLONAT PËRFUNDIMTARE:
+    ['model', 'year', 'price', 'transmission', 'mileage', 'fuel_type', 'engine_size', 'mileage2', 'fuel_type2', 'engine_size2', 'reference']
+
+    STATISTIKAT NUMERIKE:
+                  year         price     mileage  engine_size
+count    76.000000     76.000000   76.000000          0.0
+mean   2019.171053  19631.828947  324.289474          NaN
+std       1.215326   4146.588749  335.173142          NaN
+min    2010.000000   1275.000000    1.000000          NaN
+25%    2019.000000  17515.000000   23.750000          NaN
+50%    2019.000000  18945.500000  151.000000          NaN
+75%    2020.000000  21623.000000  601.500000          NaN
+max    2020.000000  30999.000000  965.000000          NaN
+    ========================================
+    

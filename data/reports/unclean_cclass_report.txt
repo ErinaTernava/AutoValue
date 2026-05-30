@@ -1,0 +1,27 @@
+
+    ========================================
+    RAPORTI I PASTRIMIT: UNCLEAN_CCLASS → CCLASS
+    ========================================
+    Data: 2026-05-30 19:55:36
+
+    STATISTIKAT:
+    - Rreshtat para pastrimit: 4006
+    - Rreshtat pas pastrimit: 159
+    - Rreshtat e hequr: 3847
+    - Përqindja e hequr: 96.0%
+
+    KOLONAT PËRFUNDIMTARE:
+    ['model', 'year', 'price', 'transmission', 'mileage', 'fuel_type', 'engine_size', 'mileage2', 'fuel_type2', 'engine_size2', 'reference']
+
+    STATISTIKAT NUMERIKE:
+                  year         price     mileage  engine_size
+count   159.000000    159.000000  159.000000          0.0
+mean   2019.238994  35034.345912  259.559748          NaN
+std       0.620934  10524.474280  313.017381          NaN
+min    2014.000000  20495.000000    1.000000          NaN
+25%    2019.000000  29980.000000   16.000000          NaN
+50%    2019.000000  31539.000000  100.000000          NaN
+75%    2020.000000  34899.500000  500.000000          NaN
+max    2020.000000  67940.000000  999.000000          NaN
+    ========================================
+    
