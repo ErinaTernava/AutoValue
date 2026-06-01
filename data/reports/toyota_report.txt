@@ -1,16 +1,16 @@
 
     ========================================
-    RAPORTI I PASTRIMIT: TOYOTA → TOYOTA
+    RAPORTI I PASTRIMIT: TOYOTA  TOYOTA
     ========================================
-    Data: 2026-06-01 14:28:01
+    Data: 2026-06-01 20:08:22
 
     STATISTIKAT:
     - Rreshtat para pastrimit: 6738
     - Rreshtat pas pastrimit: 6632
     - Rreshtat e hequr: 106
-    - Përqindja e hequr: 1.6%
+    - Prqindja e hequr: 1.6%
 
-    KOLONAT PËRFUNDIMTARE:
+    KOLONAT PRFUNDIMTARE:
     ['model', 'year', 'price', 'transmission', 'mileage', 'fueltype', 'tax', 'mpg', 'enginesize']
 
     STATISTIKAT NUMERIKE:

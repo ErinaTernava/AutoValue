@@ -1,16 +1,16 @@
 
     ========================================
-    RAPORTI I PASTRIMIT: MERC → MERCEDES
+    RAPORTI I PASTRIMIT: MERC  MERCEDES
     ========================================
-    Data: 2026-06-01 14:28:01
+    Data: 2026-06-01 20:08:19
 
     STATISTIKAT:
     - Rreshtat para pastrimit: 13119
     - Rreshtat pas pastrimit: 12731
     - Rreshtat e hequr: 388
-    - Përqindja e hequr: 3.0%
+    - Prqindja e hequr: 3.0%
 
-    KOLONAT PËRFUNDIMTARE:
+    KOLONAT PRFUNDIMTARE:
     ['model', 'year', 'price', 'transmission', 'mileage', 'fueltype', 'tax', 'mpg', 'enginesize']
 
     STATISTIKAT NUMERIKE:

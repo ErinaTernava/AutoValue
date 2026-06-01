@@ -1,16 +1,16 @@
 
     ========================================
-    RAPORTI I PASTRIMIT: BMW → BMW
+    RAPORTI I PASTRIMIT: BMW  BMW
     ========================================
-    Data: 2026-06-01 14:28:00
+    Data: 2026-06-01 20:08:13
 
     STATISTIKAT:
     - Rreshtat para pastrimit: 10781
     - Rreshtat pas pastrimit: 10557
     - Rreshtat e hequr: 224
-    - Përqindja e hequr: 2.1%
+    - Prqindja e hequr: 2.1%
 
-    KOLONAT PËRFUNDIMTARE:
+    KOLONAT PRFUNDIMTARE:
     ['model', 'year', 'price', 'transmission', 'mileage', 'fueltype', 'tax', 'mpg', 'enginesize']
 
     STATISTIKAT NUMERIKE:

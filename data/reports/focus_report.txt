@@ -1,16 +1,16 @@
 
     ========================================
-    RAPORTI I PASTRIMIT: FOCUS → FOCUS
+    RAPORTI I PASTRIMIT: FOCUS  FOCUS
     ========================================
-    Data: 2026-06-01 14:28:00
+    Data: 2026-06-01 20:08:15
 
     STATISTIKAT:
     - Rreshtat para pastrimit: 5454
     - Rreshtat pas pastrimit: 4710
     - Rreshtat e hequr: 744
-    - Përqindja e hequr: 13.6%
+    - Prqindja e hequr: 13.6%
 
-    KOLONAT PËRFUNDIMTARE:
+    KOLONAT PRFUNDIMTARE:
     ['model', 'year', 'price', 'transmission', 'mileage', 'fueltype', 'enginesize']
 
     STATISTIKAT NUMERIKE:

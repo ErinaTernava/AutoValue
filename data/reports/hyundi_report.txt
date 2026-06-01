@@ -1,20 +1,20 @@
 
     ========================================
-    RAPORTI I PASTRIMIT: HYUNDI → HYUNDAI
+    RAPORTI I PASTRIMIT: HYUNDI  HYUNDAI
     ========================================
-    Data: 2026-06-01 14:28:00
+    Data: 2026-06-01 20:08:18
 
     STATISTIKAT:
     - Rreshtat para pastrimit: 4860
     - Rreshtat pas pastrimit: 4726
     - Rreshtat e hequr: 134
-    - Përqindja e hequr: 2.8%
+    - Prqindja e hequr: 2.8%
 
-    KOLONAT PËRFUNDIMTARE:
-    ['model', 'year', 'price', 'transmission', 'mileage', 'fueltype', 'tax(£)', 'mpg', 'enginesize']
+    KOLONAT PRFUNDIMTARE:
+    ['model', 'year', 'price', 'transmission', 'mileage', 'fueltype', 'tax()', 'mpg', 'enginesize']
 
     STATISTIKAT NUMERIKE:
-                  year         price        mileage       tax(£)          mpg   enginesize
+                  year         price        mileage       tax()          mpg   enginesize
 count  4726.000000   4726.000000    4726.000000  4726.000000  4726.000000  4726.000000
 mean   2017.070250  12484.553110   21832.751375   120.940542    53.983136     1.452983
 std       1.917818   5431.622957   17614.050922    58.377796    12.722202     0.397013

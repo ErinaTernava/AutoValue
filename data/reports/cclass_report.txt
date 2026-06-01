@@ -1,16 +1,16 @@
 
     ========================================
-    RAPORTI I PASTRIMIT: CCLASS → CCLASS
+    RAPORTI I PASTRIMIT: CCLASS  CCLASS
     ========================================
-    Data: 2026-06-01 14:28:00
+    Data: 2026-06-01 20:08:14
 
     STATISTIKAT:
     - Rreshtat para pastrimit: 3899
     - Rreshtat pas pastrimit: 3759
     - Rreshtat e hequr: 140
-    - Përqindja e hequr: 3.6%
+    - Prqindja e hequr: 3.6%
 
-    KOLONAT PËRFUNDIMTARE:
+    KOLONAT PRFUNDIMTARE:
     ['model', 'year', 'price', 'transmission', 'mileage', 'fueltype', 'enginesize']
 
     STATISTIKAT NUMERIKE:

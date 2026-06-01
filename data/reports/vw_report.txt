@@ -1,16 +1,16 @@
 
     ========================================
-    RAPORTI I PASTRIMIT: VW → VOLKSWAGEN
+    RAPORTI I PASTRIMIT: VW  VOLKSWAGEN
     ========================================
-    Data: 2026-06-01 14:28:01
+    Data: 2026-06-01 20:08:28
 
     STATISTIKAT:
     - Rreshtat para pastrimit: 15157
     - Rreshtat pas pastrimit: 14744
     - Rreshtat e hequr: 413
-    - Përqindja e hequr: 2.7%
+    - Prqindja e hequr: 2.7%
 
-    KOLONAT PËRFUNDIMTARE:
+    KOLONAT PRFUNDIMTARE:
     ['model', 'year', 'price', 'transmission', 'mileage', 'fueltype', 'tax', 'mpg', 'enginesize']
 
     STATISTIKAT NUMERIKE:

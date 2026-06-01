@@ -1,16 +1,16 @@
 
     ========================================
-    RAPORTI I PASTRIMIT: UNCLEAN_CCLASS → CCLASS
+    RAPORTI I PASTRIMIT: UNCLEAN_CCLASS  CCLASS
     ========================================
-    Data: 2026-06-01 14:28:01
+    Data: 2026-06-01 20:08:29
 
     STATISTIKAT:
     - Rreshtat para pastrimit: 4006
     - Rreshtat pas pastrimit: 159
     - Rreshtat e hequr: 3847
-    - Përqindja e hequr: 96.0%
+    - Prqindja e hequr: 96.0%
 
-    KOLONAT PËRFUNDIMTARE:
+    KOLONAT PRFUNDIMTARE:
     ['model', 'year', 'price', 'transmission', 'mileage', 'fuel_type', 'engine_size', 'mileage2', 'fuel_type2', 'engine_size2', 'reference']
 
     STATISTIKAT NUMERIKE:

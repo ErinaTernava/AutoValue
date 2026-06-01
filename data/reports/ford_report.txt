@@ -1,16 +1,16 @@
 
     ========================================
-    RAPORTI I PASTRIMIT: FORD → FORD
+    RAPORTI I PASTRIMIT: FORD  FORD
     ========================================
-    Data: 2026-06-01 14:28:00
+    Data: 2026-06-01 20:08:17
 
     STATISTIKAT:
     - Rreshtat para pastrimit: 17965
     - Rreshtat pas pastrimit: 17632
     - Rreshtat e hequr: 333
-    - Përqindja e hequr: 1.9%
+    - Prqindja e hequr: 1.9%
 
-    KOLONAT PËRFUNDIMTARE:
+    KOLONAT PRFUNDIMTARE:
     ['model', 'year', 'price', 'transmission', 'mileage', 'fueltype', 'tax', 'mpg', 'enginesize']
 
     STATISTIKAT NUMERIKE:

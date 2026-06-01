@@ -1,16 +1,16 @@
 
     ========================================
-    RAPORTI I PASTRIMIT: AUDI → AUDI
+    RAPORTI I PASTRIMIT: AUDI  AUDI
     ========================================
-    Data: 2026-06-01 14:28:00
+    Data: 2026-06-01 20:08:12
 
     STATISTIKAT:
     - Rreshtat para pastrimit: 10668
     - Rreshtat pas pastrimit: 10460
     - Rreshtat e hequr: 208
-    - Përqindja e hequr: 1.9%
+    - Prqindja e hequr: 1.9%
 
-    KOLONAT PËRFUNDIMTARE:
+    KOLONAT PRFUNDIMTARE:
     ['model', 'year', 'price', 'transmission', 'mileage', 'fueltype', 'tax', 'mpg', 'enginesize']
 
     STATISTIKAT NUMERIKE:

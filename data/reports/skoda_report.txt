@@ -1,16 +1,16 @@
 
     ========================================
-    RAPORTI I PASTRIMIT: SKODA → SKODA
+    RAPORTI I PASTRIMIT: SKODA  SKODA
     ========================================
-    Data: 2026-06-01 14:28:01
+    Data: 2026-06-01 20:08:20
 
     STATISTIKAT:
     - Rreshtat para pastrimit: 6267
     - Rreshtat pas pastrimit: 6129
     - Rreshtat e hequr: 138
-    - Përqindja e hequr: 2.2%
+    - Prqindja e hequr: 2.2%
 
-    KOLONAT PËRFUNDIMTARE:
+    KOLONAT PRFUNDIMTARE:
     ['model', 'year', 'price', 'transmission', 'mileage', 'fueltype', 'tax', 'mpg', 'enginesize']
 
     STATISTIKAT NUMERIKE:

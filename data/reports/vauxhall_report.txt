@@ -1,16 +1,16 @@
 
     ========================================
-    RAPORTI I PASTRIMIT: VAUXHALL → VAUXHALL
+    RAPORTI I PASTRIMIT: VAUXHALL  VAUXHALL
     ========================================
-    Data: 2026-06-01 14:28:01
+    Data: 2026-06-01 20:08:25
 
     STATISTIKAT:
     - Rreshtat para pastrimit: 13632
     - Rreshtat pas pastrimit: 13127
     - Rreshtat e hequr: 505
-    - Përqindja e hequr: 3.7%
+    - Prqindja e hequr: 3.7%
 
-    KOLONAT PËRFUNDIMTARE:
+    KOLONAT PRFUNDIMTARE:
     ['model', 'year', 'price', 'transmission', 'mileage', 'fueltype', 'tax', 'mpg', 'enginesize']
 
     STATISTIKAT NUMERIKE:
