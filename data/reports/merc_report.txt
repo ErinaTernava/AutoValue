@@ -2,7 +2,7 @@
     ========================================
     RAPORTI I PASTRIMIT: MERC → MERCEDES
     ========================================
-    Data: 2026-05-30 19:55:35
+    Data: 2026-06-01 14:28:01
 
     STATISTIKAT:
     - Rreshtat para pastrimit: 13119

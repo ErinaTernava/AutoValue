@@ -2,7 +2,7 @@
     ========================================
     RAPORTI I PASTRIMIT: UNCLEAN_CCLASS → CCLASS
     ========================================
-    Data: 2026-05-30 19:55:36
+    Data: 2026-06-01 14:28:01
 
     STATISTIKAT:
     - Rreshtat para pastrimit: 4006
