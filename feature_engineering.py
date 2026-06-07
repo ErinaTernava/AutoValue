@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 
 df = joblib.load("processed/df_cleaned.pkl")
 
-df["car_age"] = 2020 - df["year"]
+df['car_age'] = df['year'].max() - df['year'] 
 df = df.drop(columns=["year"])
 
 df["mileage"] = np.log1p(df["mileage"])
