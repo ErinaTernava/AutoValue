@@ -1,5 +1,0 @@
-Model,Accuracy,Precision,Recall,F1 (weighted),Best Params
-LR Baseline,0.8867,0.8871,0.8867,0.8867,default
-LR Tuned,0.8864,0.8867,0.8864,0.8864,"{'C': 100, 'max_iter': 1000, 'penalty': 'l2', 'solver': 'lbfgs'}"
-KNN Baseline,0.8982,0.8983,0.8982,0.8982,"k=5, uniform, euclidean"
-KNN Tuned,0.9011,0.9012,0.9011,0.9011,"{'metric': 'manhattan', 'n_neighbors': 7, 'weights': 'uniform'}"
