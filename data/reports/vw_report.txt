@@ -2,7 +2,7 @@
     ========================================
     RAPORTI I PASTRIMIT: VW  VOLKSWAGEN
     ========================================
-    Data: 2026-06-01 20:08:28
+    Data: 2026-06-11 21:04:57
 
     STATISTIKAT:
     - Rreshtat para pastrimit: 15157
